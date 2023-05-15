@@ -15,6 +15,13 @@ gem 'puma', '~> 5.0'
 # Use postgrees as the database for Active Record
 gem 'pg'
 
+# Use active-model-serializers for creating serializers for our API.
+gem 'active_model_serializers'
+
+# Use pager_api & kaminari for paginations in API
+gem 'api-pagination'
+gem 'kaminari'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
