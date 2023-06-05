@@ -1,18 +1,15 @@
 class Api::V1::ArticlesController < ApplicationController
+  before_action :fetch_article, only: %i[show update destroy]
+
   def index
-    articles = if params.key?('page')
-                 Article.all.limit(3).offset(3 * (params[:page].to_i - 1))
-               else
-                 Article.all
-               end
-    paginate articles, per_page: 3
+    articles = Article.all.page params[:page]
+
     render json: articles, status: 200
   end
 
   def show
-    article = Article.find(params[:id])
-    if article
-      render json: article, status: 200
+    if @article
+      render json: @article, status: 200
     else
       render json: { error: 'Article not found' }, status: 404
     end
@@ -29,20 +26,17 @@ class Api::V1::ArticlesController < ApplicationController
   end
 
   def update
-    article = Article.find(params[:id])
-
-    if article.update(article_params)
-      render json: article, status: 200
+    if @article.update(article_params)
+      render json: @article, status: 200
     else
       render json: { error: 'Article not updated!' }
     end
   end
 
   def destroy
-    article = Article.find(params[:id])
-    if article
-      article.destroy
-      render json: article, status: 200
+    if @article
+      @article.destroy
+      render json: @article, status: 200
     else
       render json: { error: 'Article not found' }, status: 404
     end
@@ -58,6 +52,10 @@ class Api::V1::ArticlesController < ApplicationController
   end
 
   private
+
+  def fetch_article
+    @article = Article.find_by(id: params[:id])
+  end
 
   def article_params
     params.require(:article).permit(:title, :body)

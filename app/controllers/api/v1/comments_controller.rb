@@ -8,15 +8,11 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def show
-    if @comment
-      render json: @comment, status: 200
-    else
-      render json: { error: 'Comment not found' }, status: 404
-    end
+    render json: @comment, status: 200
   end
 
   def create
-    @comment = @article.comments.new(comment: params[:comment])
+    @comment = @article.comments.new(comment_params)
 
     if @comment.save
       render json: @comment, status: 200
@@ -26,7 +22,7 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def update
-    if @comment.update(comment: params[:comment])
+    if @comment.update(comment_params)
       render json: @comment, status: 200
     else
       render json: { error: 'Comment not updated!' }
@@ -34,12 +30,8 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def destroy
-    if @comment
-      @comment.destroy
-      render json: @comments, status: 200
-    else
-      render json: { error: 'Comment not found' }, status: 404
-    end
+    @comment.destroy
+    render json: @comments, status: 200
   end
 
   def search
@@ -50,10 +42,16 @@ class Api::V1::CommentsController < ApplicationController
   private
 
   def fetch_comment
-    @comment = Article.find(params[:article_id]).comments.find(params[:id])
+    @comment = Article.find(params[:article_id]).comments.find_by(id: params[:id])
+    render json: { error: 'Comment not found' }, status: 404 unless @comment
   end
 
   def fetch_article
-    @article = Article.find(params[:article_id])
+    @article = Article.find_by(id: params[:article_id])
+    render json: { error: 'Article not found' }, status: 404 unless @article
+  end
+
+  def comment_params
+    params.require(:comment).permit(:comment_content)
   end
 end

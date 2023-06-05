@@ -1,5 +1,6 @@
 class Article < ApplicationRecord
   has_many :comments
+  paginates_per 3
 
   after_create :release_date
 

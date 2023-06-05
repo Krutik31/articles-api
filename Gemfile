@@ -18,8 +18,7 @@ gem 'pg'
 # Use active-model-serializers for creating serializers for our API.
 gem 'active_model_serializers'
 
-# Use pager_api & kaminari for paginations in API
-gem 'api-pagination'
+# Use kaminari for paginations in API
 gem 'kaminari'
 
 # Use Redis adapter to run Action Cable in production

@@ -10,26 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_230_515_091_227) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_15_091227) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+  enable_extension "plpgsql"
 
-  create_table 'articles', force: :cascade do |t|
-    t.string 'title'
-    t.text 'body'
-    t.date 'release_date'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "articles", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.date "release_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table 'comments', force: :cascade do |t|
-    t.string 'comment'
-    t.date 'date_of_comment'
-    t.bigint 'article_id', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['article_id'], name: 'index_comments_on_article_id'
+  create_table "comments", force: :cascade do |t|
+    t.string "comment_content"
+    t.date "date_of_comment"
+    t.bigint "article_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_comments_on_article_id"
   end
 
-  add_foreign_key 'comments', 'articles'
+  add_foreign_key "comments", "articles"
 end
